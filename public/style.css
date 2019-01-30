@@ -1,0 +1,49 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.2rem;
+    color: black;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    text-align: center;
+}
+
+.board {
+    margin: 0 auto;
+    display: block;
+    position: relative;
+    background-color: black;
+    width: 60vw;
+    height: 60vw;
+}
+
+
+/* so this would be [2, 2] */
+.snake-cell {
+    position: absolute;
+    width: 6vw;
+    height: 6vw;
+    left: 6vw;
+    bottom: 6vw;
+    background-color: green;
+}
+
+h1 {
+    font-family: 'Eater', cursive;
+    font-size: 4rem;
+}
+h2 {
+    font-family: 'Eater', cursive;
+    font-size: 3rem;
+}
+h3 {
+    font-family: 'Eater', cursive;
+    font-size: 2rem;
+}
+h4 {
+    font-family: 'Nosifer', cursive;
+    font-size: 2rem;
+}
