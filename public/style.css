@@ -1,9 +1,16 @@
 body {
     font-family: 'Roboto', sans-serif;
-    font-size: 1.2rem;
+    font-size: 1.25rem;
     color: black;
+    margin: 0;
+    padding: 0;
+    position: fixed;
+    width: 100%;
 }
 
+* {
+    box-sizing: border-box;
+}
 .container {
     max-width: 1000px;
     margin: 0 auto;
@@ -12,28 +19,37 @@ body {
 }
 
 .board {
-    margin: 0 auto;
+    margin: 0 auto 1rem;
     display: block;
     position: relative;
     background-color: black;
+    border: 0.25vw solid black;
     width: 50vw;
     height: 50vw;
 }
 
 
-/* so this would be [2, 2] */
+/* 50vw = width of grid, 10 squares per grid */
 .snake-cell {
     position: absolute;
-    width: 6vw;
-    height: 6vw;
-    left: 6vw;
-    bottom: 6vw;
-    background-color: green;
+    width: 5vw;
+    height: 5vw;
+    /* background-color: green; */
+    background: radial-gradient(greenyellow, green);
+    border: 0.25vw solid black;
+    border-radius: 0.5vw;
 }
 
 h1 {
     font-family: 'Eater', cursive;
     font-size: 4rem;
+    margin: 0;
+    color: darkolivegreen;
+    text-shadow:
+    -0.1rem -0.1rem 0 greenyellow,
+    0.1rem 0.1rem 0 greenyellow,
+    -0.1rem 0.1rem 0 green,
+    0.1rem 0.1rem 0 green;
 }
 h2 {
     font-family: 'Eater', cursive;
@@ -46,4 +62,8 @@ h3 {
 h4 {
     font-family: 'Nosifer', cursive;
     font-size: 2rem;
+}
+
+p {
+    margin: 0 0 1rem;
 }

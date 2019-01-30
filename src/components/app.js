@@ -10,12 +10,14 @@ import Gif from './Gif.js';
 export default class App extends React.Component {
 
     state = {
+        header: '🐍 Snake Game 🐍',
+        tagline: 'Play some snake FACers!!! 🐍 🐍 🐍 🐍 🐍'
     };
 
     render() {
         return (
             <div>
-                <Header />
+                <Header header={this.state.header} tagline={this.state.tagline}/>
                 <Board />
                 <Gif />
             </div>
