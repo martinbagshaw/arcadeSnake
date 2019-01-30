@@ -1,6 +1,5 @@
 import React from 'react';
-
-// import Snake from './Snake';
+import Snake from './Snake';
 
 export default class Board extends React.Component {
 
@@ -11,7 +10,8 @@ export default class Board extends React.Component {
         return (
             <div className="container">
                 <div className="board">
-                <div className="snake-cell"></div>
+                <Snake />
+                {/* <div className="snake-cell"></div> */}
                 </div>
             </div>
         )
