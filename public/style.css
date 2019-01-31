@@ -19,15 +19,6 @@ body {
 }
 
 
-.StartBtn {
-    width: 50px;
-    height: 20px;
-}
-
-.StartBtn:hover {
-    background-color: red;
-}
-
 /* typography */
 h1 {
     font-family: 'Eater', cursive;
@@ -58,6 +49,8 @@ p {
 }
 
 
+
+
 /* header */
 @media only screen and (min-width: 1000px) {
     .container.header {
@@ -76,10 +69,37 @@ p {
     .container.game {
         margin-top: 2rem;
     }
+    .container.start {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 25vw;
+        padding: 2rem 2.5vw;
+    }
 
 }
 
 
+
+/* start button */
+.StartBtn {
+    cursor: pointer;
+    border: 0;
+    background-color: greenyellow;
+    color: green;
+    border-radius: 0.25rem;
+    font-size: 1.5rem;
+    padding: 0.75rem 1.5rem;
+    transition: all ease-in-out 0.3s;
+}
+.StartBtn:hover {
+    background-color: green;
+    color: greenyellow;
+}
 
 
 

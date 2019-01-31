@@ -1,10 +1,24 @@
 import React from 'react';
 
-export default class Snake extends React.Component{
-    state = {
-        snakeArr: [[0,0],[1,0],[2,0]],
-        time: 0
-    };
+export default class Snake extends React.Component {
+
+    // state = {
+    //     snakeArr: [[0,0],[1,0],[2,0]],
+    //     time: 0
+    // };
+    constructor(props) {
+        super(props);
+
+        this.time = props.time;
+
+        this.state = {
+            snakeArr: [[0,0],[1,0],[2,0]],
+            time: 0
+        };
+    }
+
+
+
 
     // snake knows to keep travelling in one direction because:
     // - we are only ever adding to item to the front of the array (the head)
@@ -14,6 +28,10 @@ export default class Snake extends React.Component{
     // 1. set an interval function
     // - run every 0.5s
     // - re-render on each interval
+
+    // every time this.time changes, we need to re-render and run all of the checks
+    // {/* {this.time} */}
+
 
 
     render(){
@@ -37,7 +55,6 @@ export default class Snake extends React.Component{
                     return <div className='snake-cell' style={style} key={style.item}></div>
   
                 })}
-
             </React.Fragment>
         )
     }
