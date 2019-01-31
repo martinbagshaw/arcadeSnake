@@ -6,18 +6,26 @@ export default class Snake extends React.Component{
         time: 0
     };
 
+    // snake knows to keep travelling in one direction because:
+    // - we are only ever adding to item to the front of the array (the head)
+    // - after 
+
+
+    // 1. set an interval function
+    // - run every 0.5s
+    // - re-render on each interval
+
 
     render(){
         const snakeCells = this.state.snakeArr.map((item, index) => {
-            const xaxis = item[0] * 5;
-            const yaxis = item[1] * 5;
+            // get x and y co-ordinates from each array item
             const style =  {
-                left: `${xaxis}vw`,
-                bottom: `${yaxis}vw`,
+                left: `${item[0] * 5}vw`,
+                bottom: `${item[1] * 5}vw`,
                 item: index
             }
 
-            console.log(style);
+            // console.log(style);
         return style;
 
 
