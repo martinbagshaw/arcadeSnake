@@ -16,14 +16,21 @@ export default class App extends React.Component {
         running: false
     };
 
-
+    startBtnClick = () => {
+        this.setState({running: true})
+        console.log(this.state.running);
+    }
+    
     render() {
+        console.log(this.state.running)
         return (
             <div>
                 <Header header={this.state.header} tagline={this.state.tagline}/>
                 <Board />
                 <Gif />
-                <StartBtn />
+                <StartBtn 
+                onClick = {this.startBtnClick}
+                />
             </div>
         )
     }

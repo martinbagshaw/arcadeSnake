@@ -28,6 +28,14 @@ body {
     height: 50vw;
 }
 
+.StartBtn {
+    width: 50px;
+    height: 20px;
+}
+
+.StartBtn:hover {
+    background-color: red;
+}
 
 /* 50vw = width of grid, 10 squares per grid */
 .snake-cell {
