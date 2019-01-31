@@ -18,11 +18,9 @@ export default class App extends React.Component {
 
     startBtnClick = () => {
         this.setState({running: true})
-        console.log(this.state.running);
     }
     
     render() {
-        console.log(this.state.running)
         return (
             <div>
                 <Header header={this.state.header} tagline={this.state.tagline}/>
