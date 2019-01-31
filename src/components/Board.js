@@ -8,7 +8,7 @@ export default class Board extends React.Component {
 
     render() {
         return (
-            <div className="container">
+            <div className="container game">
                 <div className="board">
                 <Snake />
                 {/* <div className="snake-cell"></div> */}

@@ -10,7 +10,7 @@ import Gif from './Gif.js';
 export default class App extends React.Component {
 
     state = {
-        header: '🐍 Snake Game 🐍',
+        header: '🐍 Snake 🐍',
         tagline: 'Play some snake FACers!!! 🐍 🐍 🐍 🐍 🐍'
     };
 
