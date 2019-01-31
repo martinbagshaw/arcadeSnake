@@ -18,15 +18,6 @@ body {
     text-align: center;
 }
 
-.board {
-    margin: 0 auto 1rem;
-    display: block;
-    position: relative;
-    background-color: black;
-    border: 0.25vw solid black;
-    width: 50vw;
-    height: 50vw;
-}
 
 .StartBtn {
     width: 50px;
@@ -37,17 +28,7 @@ body {
     background-color: red;
 }
 
-/* 50vw = width of grid, 10 squares per grid */
-.snake-cell {
-    position: absolute;
-    width: 5vw;
-    height: 5vw;
-    /* background-color: green; */
-    background: radial-gradient(greenyellow, green);
-    border: 0.25vw solid black;
-    border-radius: 0.5vw;
-}
-
+/* typography */
 h1 {
     font-family: 'Eater', cursive;
     font-size: 4rem;
@@ -74,4 +55,54 @@ h4 {
 
 p {
     margin: 0 0 1rem;
+}
+
+
+/* header */
+@media only screen and (min-width: 1000px) {
+    .container.header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        max-width: 25vw;
+        padding: 0 2.5vw;
+    }
+    .container.header h1 {
+        max-width: 2vw;
+        word-wrap: break-word;
+        line-height: 1.2;
+        margin: 2rem auto;
+    }
+    .container.game {
+        margin-top: 2rem;
+    }
+
+}
+
+
+
+
+
+
+/* board */
+.board {
+    margin: 0 auto 1rem;
+    display: block;
+    position: relative;
+    background-color: black;
+    border: 0.25vw solid black;
+    box-sizing: content-box;
+    width: 50vw;
+    height: 50vw;
+}
+
+
+/* 50vw = width of grid, 10 squares per grid */
+.snake-cell {
+    position: absolute;
+    width: 5vw;
+    height: 5vw;
+    background: radial-gradient(greenyellow, green);
+    border: 0.25vw solid black;
+    border-radius: 0.5vw;
 }
