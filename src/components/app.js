@@ -32,24 +32,14 @@ export default class App extends React.Component {
                 this.timer = setInterval(() => {
 
                     
-                    
-                    
-                    // console.log('state snake: ', this.state.snakeArr);
-                    // this is adding to the array, but the head coords are not incrementing
 
-                    
                     
                     // update the snake array
                     const cloneSnake = Array.from(this.state.snakeArr);
-                    // console.log('clone snake: ', cloneSnake);
-
 
                     const snakeHead = cloneSnake[cloneSnake.length - 1];
 
-                    // const head = cloneSnake.length - 1;
-                    // console.log(cloneSnake[head][0] += 1)
 
-                    // update the x value and create a new head
 
                     // if starting value x = 2, dont increment x value
                     let newX;
@@ -58,7 +48,9 @@ export default class App extends React.Component {
                     } else {
                         newX = snakeHead[0]+=1;
                     }
-                    console.log(newX);
+
+
+                    // console.log(newX);
                     // const newX = snakeHead[0] === 2 ? snakeHead[0] : snakeHead[0]+=1;
 
                     // const newX = snakeHead[0]+=1;
@@ -66,6 +58,7 @@ export default class App extends React.Component {
 
                     // add the new head to the array
                     const a = [...this.state.snakeArr, ...[newHead]];
+                    // can also do: this.state.snakeArr.concat([newHead]);
 
 
 
