@@ -5,7 +5,7 @@ import Snake from './Snake';
 const Board = (props) => (
     <div className="container game">
         <div className="board">
-            <Snake time={props.time} snakeArr={props.snakeArr} update={props.update} />
+        <Snake time={props.time} snakeArr={props.snakeArr} update={props.update} running={props.running}/>
         </div>
     </div>
 )

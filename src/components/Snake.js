@@ -1,18 +1,22 @@
 import React from 'react';
+import { lte } from 'semver';
 
 export default class Snake extends React.Component {
 
     constructor(props) {
         super(props);
 
+        // see issue regarding props here being unnecessary
         this.time = props.time;
         this.snake = props.snakeArr;
+        this.update = props.update;
+        this.running = props.running;
+
 
     }
 
-    shouldComponentUpdate(nextProps) {
-
-
+     // not using this at present:
+     shouldComponentUpdate(nextProps) {
         // compare the current time to the old time
         const newTime = this.time !== nextProps.time;
 
@@ -21,22 +25,13 @@ export default class Snake extends React.Component {
 
         // need to return something, but it doesn't seem to matter what
         return newTime;
-
     }
 
 
 
     render(){
 
-        // console.log('int');
-
-        // if (this.time !== this.props.time) {
-            // console.log('int');
-            // console.log(this.props.snakeArr, this.props.time);
-
-        // }
-        // console.log(this.snake, this.time);
-
+        // see issue regarding using one map
         const snakeCells = this.props.snakeArr.map((item, index) => {
             // get x and y co-ordinates from each array item
             const style =  {
