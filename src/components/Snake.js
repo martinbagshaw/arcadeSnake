@@ -15,6 +15,7 @@ export default class Snake extends React.Component {
     // links interval timer to render
     // - runs every 0.5s
     shouldComponentUpdate(nextProps) {
+    
 
         // console.log(this.update);
         
@@ -27,19 +28,20 @@ export default class Snake extends React.Component {
     //     // console.log(nextProps);
     //     // console.log(this.snake);
 
+
+    //   console.log(this.snake);
+        
         const cloneSnake = Array.from(this.snake);
-        const snakeHead = cloneSnake[cloneSnake.length - 1];
-
+        // const snakeHead = cloneSnake[cloneSnake.length - 1];
         // update the x value
-        const newX = snakeHead[0]++;
-        const newHead = [newX, snakeHead[1]];
+        // const newX = snakeHead[0]++;
+        // const newHead = [newX, snakeHead[1]];
 
+        const cloneSnake2 = cloneSnake.map(item => {item[0]++});
         // console.log(cloneSnake.push(newHead));
 
-        const a = [...cloneSnake, ...[newHead]];
+        const a = cloneSnake2;
         console.log(a);
-
-
         // this.snake = [cloneSnake, ...newHead];
 
         // const a = cloneSnake.concat(newHead);
