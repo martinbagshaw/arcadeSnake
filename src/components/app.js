@@ -11,7 +11,8 @@ export default class App extends React.Component {
         header: '🐍 Snake 🐍',
         tagline: 'Play some snake FACers!!! 🐍 🐍 🐍 🐍 🐍',
         running: false,
-        time: 0
+        time: 0,
+        snakeArr: [[0,0],[1,0],[2,0]]
     };
 
     // set running to true to start
@@ -32,6 +33,8 @@ export default class App extends React.Component {
                     // console.log(Date.now() - prevState.time);
                     this.setState({ time: Date.now() - startTime })
                     // console.log(this.state.time);
+
+                    // console.log(this.state.snakeArr);
                 }, 500); // half second
 
             }
@@ -39,12 +42,29 @@ export default class App extends React.Component {
         })
     }
 
+
+    // update the snake state on each render
+    updateSnake = () => {
+        this.setState(prevState => {
+
+            
+
+            if (this.state.time > 0) {
+                const newTime = this.state.time !== prevState.time;
+                // console.log(newTime);
+                console.log(this.state.snakeArr);
+            }
+        })
+    }
+
+
+
     
     render() {
         return (
             <div>
-                <Header header={this.state.header} tagline={this.state.tagline}/>
-                <Board time={this.state.time}/>
+                <Header header={this.state.header} tagline={this.state.tagline} />
+                <Board time={this.state.time} snakeArr={this.state.snakeArr} update={this.updateSnake} />
                 <Gif />
                 <StartBtn 
                 onClick = {this.startBtnClick}
