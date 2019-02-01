@@ -12,7 +12,8 @@ export default class App extends React.Component {
         tagline: 'Play some snake FACers!!! 🐍 🐍 🐍 🐍 🐍',
         running: false,
         time: 0,
-        snakeArr: [[0,0],[1,0],[2,0]]
+        snakeArr: [[0,0],[1,0],[2,0]],
+        direction: null
     };
 
     // set running to true to start
@@ -31,16 +32,39 @@ export default class App extends React.Component {
                 // set timer
                 this.timer = setInterval(() => {
 
-                    
 
-                    
                     // update the snake array
-                    const cloneSnake = Array.from(this.state.snakeArr);
+                    const cloneSnake = Array.from(this.state.snakeArr); // may not need to copy / clone
 
+                    // get the snake head (last item)
                     const snakeHead = cloneSnake[cloneSnake.length - 1];
 
+                    
+                    
+                    // let direction;
+                    console.log(this.state.direction);
+                    
 
+                    let newSnakeHead;
+                    if (this.state.direction === 'up') {
+                        newSnakeHead = [snakeHead[0], snakeHead[1]+=1]
+                    }
+                    else if (this.state.direction === 'down') {
+                        newSnakeHead = [snakeHead[0], snakeHead[1]-=1]
+                    }
+                    else if (this.state.direction === 'left') {
+                        newSnakeHead = [snakeHead[0]-=1, snakeHead[1]]
+                    }
+                    else if (this.state.direction === 'right' ) {
+                        newSnakeHead = [snakeHead[0]+=1, snakeHead[1]]
+                    }
+                    // else {
+                    //     newSnakeHead = [snakeHead[0]+=1, snakeHead[1]]
+                    // }
 
+                    console.log(newSnakeHead);
+                    
+                    // moving right only
                     // if starting value x = 2, dont increment x value
                     let newX;
                     if (cloneSnake.length === 3) {
@@ -50,16 +74,17 @@ export default class App extends React.Component {
                     }
 
 
-                    // console.log(newX);
-                    // const newX = snakeHead[0] === 2 ? snakeHead[0] : snakeHead[0]+=1;
 
-                    // const newX = snakeHead[0]+=1;
+                    // console.log(this.state.direction);
+
+                    // update the snake head
                     const newHead = [newX, snakeHead[1]];
+
+                    // const newHead = newSnakeHead;
 
                     // add the new head to the array
                     const a = [...this.state.snakeArr, ...[newHead]];
                     // can also do: this.state.snakeArr.concat([newHead]);
-
 
 
                     this.setState({
@@ -72,6 +97,40 @@ export default class App extends React.Component {
             }
         })
         
+    }
+
+
+
+
+
+    handleKeyPress = (e) => {
+
+        let direction;
+        
+        if (e.keyCode === 38) {
+            direction = 'up';
+        }
+        if (e.keyCode === 40) {
+            direction = 'down';
+        }
+        if (e.keyCode === 37) {
+            direction = 'left';
+        }
+        if (e.keyCode === 39) {
+            direction = 'right';
+        }
+
+        this.setState({ direction: direction });
+        // console.log(this.state.direction);
+
+
+    }
+
+
+
+
+    componentDidMount() {
+        window.addEventListener('keydown', this.handleKeyPress);
     }
 
 
