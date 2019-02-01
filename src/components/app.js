@@ -30,48 +30,61 @@ export default class App extends React.Component {
                 const startTime = Date.now() - prevState.time;
                 // set timer
                 this.timer = setInterval(() => {
-                    // console.log(Date.now() - prevState.time);
-                    this.setState({ time: Date.now() - startTime })
-                    // console.log(this.state.time);
 
-                    // console.log(this.state.snakeArr);
+                    
+
+                    
+                    // update the snake array
+                    const cloneSnake = Array.from(this.state.snakeArr);
+
+                    const snakeHead = cloneSnake[cloneSnake.length - 1];
+
+
+
+                    // if starting value x = 2, dont increment x value
+                    let newX;
+                    if (cloneSnake.length === 3) {
+                        newX = 2
+                    } else {
+                        newX = snakeHead[0]+=1;
+                    }
+
+
+                    // console.log(newX);
+                    // const newX = snakeHead[0] === 2 ? snakeHead[0] : snakeHead[0]+=1;
+
+                    // const newX = snakeHead[0]+=1;
+                    const newHead = [newX, snakeHead[1]];
+
+                    // add the new head to the array
+                    const a = [...this.state.snakeArr, ...[newHead]];
+                    // can also do: this.state.snakeArr.concat([newHead]);
+
+
+
+                    this.setState({
+                        time: Date.now() - startTime,
+                        snakeArr: a
+                    })
+                    
+                    // console.log(this.state);
                 }, 500); // half second
-
-            }
-            // end the timer and render perhaps
-        })
-    }
-
-
-    // update the snake state on each render
-    updateSnake = () => {
-        this.setState(prevState => {
-
-            
-
-            if (this.state.time > 0) {
-                const newTime = this.state.time !== prevState.time;
-                // console.log(newTime);
-                console.log(this.state.snakeArr);
             }
         })
+        
     }
 
 
 
-    
     render() {
         return (
             <div>
                 <Header header={this.state.header} tagline={this.state.tagline} />
                 <Board time={this.state.time} snakeArr={this.state.snakeArr} update={this.updateSnake} running={this.state.running}/>
                 <Gif />
-                <StartBtn 
-                onClick = {this.startBtnClick}
-                />
+                <StartBtn onClick = {this.startBtnClick} />
             </div>
         )
     }
-
 
 }

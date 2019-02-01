@@ -11,6 +11,3 @@ const StartBtn = (props) => {
 }
 
 export default StartBtn;
-
-
-
