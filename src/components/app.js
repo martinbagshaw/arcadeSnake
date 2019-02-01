@@ -64,7 +64,7 @@ export default class App extends React.Component {
         return (
             <div>
                 <Header header={this.state.header} tagline={this.state.tagline} />
-                <Board time={this.state.time} snakeArr={this.state.snakeArr} update={this.updateSnake} />
+                <Board time={this.state.time} snakeArr={this.state.snakeArr} update={this.updateSnake} running={this.state.running}/>
                 <Gif />
                 <StartBtn 
                 onClick = {this.startBtnClick}

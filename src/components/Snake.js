@@ -1,4 +1,5 @@
 import React from 'react';
+import { lte } from 'semver';
 
 export default class Snake extends React.Component {
 
@@ -8,6 +9,7 @@ export default class Snake extends React.Component {
         this.time = props.time;
         this.snake = props.snakeArr;
         this.update = props.update;
+        this.running = props.running;
 
     }
 
@@ -31,28 +33,23 @@ export default class Snake extends React.Component {
 
     //   console.log(this.snake);
         
-        const cloneSnake = Array.from(this.snake);
+        // const cloneSnake = Array.from(this.snake);
         // const snakeHead = cloneSnake[cloneSnake.length - 1];
         // update the x value
         // const newX = snakeHead[0]++;
         // const newHead = [newX, snakeHead[1]];
-
-        const cloneSnake2 = cloneSnake.map(item => {item[0]++});
-        // console.log(cloneSnake.push(newHead));
-
-        const a = cloneSnake2;
-        console.log(a);
         // this.snake = [cloneSnake, ...newHead];
 
-        // const a = cloneSnake.concat(newHead);
-        // console.log(a);
 
-        
-    //     // console.log(newHead);
+        // Copies snake arr from state and maps over each item, 
+        // increasing the x co-ord by one on each interval 
+        const cloneSnake = Array.from(this.snake).map(item => {item[0]++});
+        // cloneSnake = originalSnake.concat(cloneSnake);
 
-    //     // this.setState({snakeArr: [cloneSnake, ...newHead]})
+     
 
-    //     // update the state here with setState
+
+
 
 
         return newTime;
