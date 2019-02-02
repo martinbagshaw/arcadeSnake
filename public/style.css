@@ -1,6 +1,6 @@
 body {
-    font-family: 'Roboto', sans-serif;
-    font-size: 1.25rem;
+    font-family: 'VT323', monospace;
+    font-size: 1.5rem;
     color: black;
     margin: 0;
     padding: 0;
@@ -69,9 +69,10 @@ p {
     .container.game {
         margin-top: 2rem;
     }
-    .container.start {
+    .container.gif {
         height: 100%;
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
         position: fixed;
@@ -92,9 +93,11 @@ p {
     background-color: greenyellow;
     color: green;
     border-radius: 0.25rem;
-    font-size: 1.5rem;
+    font-size: 2rem;
+    margin-top: 1rem;
     padding: 0.75rem 1.5rem;
     transition: all ease-in-out 0.3s;
+    font-family: 'VT323', monospace;
 }
 .StartBtn:hover {
     background-color: green;
@@ -104,25 +107,46 @@ p {
 
 
 
+/* width and height of elements are set with js */
 /* board */
 .board {
     margin: 0 auto 1rem;
     display: block;
     position: relative;
     background-color: black;
-    border: 0.25vw solid black;
+    border: 0.5vw solid darkgray;
+    border-radius: 0.25vw;
     box-sizing: content-box;
-    width: 50vw;
-    height: 50vw;
+    /* width: 50vw;
+    height: 50vw; */
 }
 
 
 /* 50vw = width of grid, 10 squares per grid */
 .snake-cell {
     position: absolute;
-    width: 5vw;
-    height: 5vw;
+    /* width: 2.5vw;
+    height: 2.5vw; */
     background: radial-gradient(greenyellow, green);
-    border: 0.25vw solid black;
+    border: 0.15vw solid black;
     border-radius: 0.5vw;
+}
+
+
+
+/* game over message */
+.start-over {
+    width: 20rem;
+    height: 10rem;
+    position: absolute;
+    top: calc(50% - 5rem);
+    bottom: calc(50% - 5rem);
+    left: calc(50% - 10rem);
+    right: calc(50% - 10rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 4rem;
 }

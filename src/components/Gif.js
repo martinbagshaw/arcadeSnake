@@ -1,18 +1,21 @@
 import React from 'react';
 
+// right hand column gif (on large screens)
 
-export default class Gif extends React.Component {
+const Gif = (props) => {
+    const { running, overMessage } = props.data;
 
-    state = {
-    };
-
-    render() {
-        return (
-            <div className="container">
-                <p>snakes on a plane gif to go here, obvs ✈️</p>
-            </div>
-        )
+    // make an api call
+    if (!running) {
+        // console.log('not running from gif');
     }
 
-
+    return (
+        <div className="container gif">
+            <p>use the directional keys to play</p>
+            <p>snakes on a plane gif to go here, obvs ✈️</p>
+        </div>
+    )
 }
+
+export default Gif;
