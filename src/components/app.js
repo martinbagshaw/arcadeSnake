@@ -14,7 +14,7 @@ export default class App extends React.Component {
         overMessage: 'Game Over!',
         running: false,
         interval: 250,
-        snakeArr: [[0,0],[1,0],[2,0],[3,0],[4,0],[5,0]],
+        snakeArr: [[0,10],[1,10],[2,10],[3,10],[4,10],[5,10]],
         direction: 'right',
         boardWidth: 50,
         boardSquares: 20,
@@ -188,7 +188,7 @@ export default class App extends React.Component {
         clearInterval(this.timer);
         this.setState({
             running: true,
-            snakeArr: [[0,0],[1,0],[2,0],[3,0],[4,0],[5,0]]
+            snakeArr: [[0,10],[1,10],[2,10],[3,10],[4,10],[5,10]]
         })
         this.startSnake();
     }

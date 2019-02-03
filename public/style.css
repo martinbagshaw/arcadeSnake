@@ -66,8 +66,8 @@ p {
 /* containers */
 .container.header {
     background-color: green;
-    border: 0.5rem solid black;
-    border-bottom: 1rem solid black;
+    border: 0.5rem solid dimgrey;
+    border-bottom: 1rem solid #343434;
     border-top-left-radius: 1rem;
     border-top-right-radius: 1rem;
     box-shadow:
