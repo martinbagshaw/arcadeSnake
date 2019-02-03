@@ -1,7 +1,11 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/13810634-7b6d-4dec-a193-c6c248fa695e/deploy-status)](https://app.netlify.com/sites/arcade-snake/deploys)
+
 # 🐍 Arcade Snake 🐍
 🐍 🐍 🐍 🐍 🐍
+
 > A continuation of [react-snake](https://github.com/fac-15/react-snake), worked on with the one and only [Teenie Quaggard](https://github.com/teenie-quaggard) during Founders and Coders React Week.
-[View on Netlify >](https://sleepy-nobel-410dd4.netlify.com/)
+
+> [View on Netlify >](https://arcade-snake.netlify.com/)
 
 ![infinity snake](https://media3.giphy.com/media/3oFzmdjqH15YebLQ52/giphy.gif?cid=3640f6095c564ae56b626a34416c111f)
 
