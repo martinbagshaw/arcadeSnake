@@ -1,7 +1,7 @@
 import React from 'react';
 
 // game over and start button
-const StartBtn = (props) => {
+const StartBtn = props => {
 
     const { running, overMessage } = props.data;
 
@@ -16,6 +16,7 @@ const StartBtn = (props) => {
             </div>
         )
     }
+    // may not need this:
     else {
         return (
             <React.Fragment>
