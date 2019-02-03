@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest --watch",
     "dev": "parcel public/index.html",
-    "build": "parcel build public/index.html"
+    "build": "parcel build public/index.html --public-url ./"
   },
   "author": "",
   "license": "ISC",

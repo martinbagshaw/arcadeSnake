@@ -13,7 +13,7 @@ body {
 }
 .container {
     /* max-width: 40rem; */
-    max-width: 75vw;
+    max-width: 65vw;
     margin: 0 auto;
     padding: 0 2rem;
     text-align: center;
@@ -212,6 +212,7 @@ width and height of elements are set with js
     border-radius: 0.5rem;
     background-color: darkgrey;
     transform-origin: 50% 95%;
+    transition: transform ease-in-out 0.2s;
 }
 .direction:after {
     position: absolute;
