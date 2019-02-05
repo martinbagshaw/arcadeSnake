@@ -1,4 +1,5 @@
 import React from 'react';
+import Apple from './Apple';
 import Snake from './Snake';
 import StartBtn from './StartBtn.js'
 
@@ -7,7 +8,7 @@ const Board = props => {
 
     const { boardWidth } = props.data;
     
-    const style =  {
+    const style = {
         width: `${boardWidth}vw`,
         height: `${boardWidth}vw`,
     }
@@ -16,6 +17,7 @@ const Board = props => {
     return (
         <div className="container game">
             <div className="board" style={style}>
+            <Apple data={props.data}/>
             <Snake data={props.data}/>
             <StartBtn onClick={props.startover} data={props.data} />
             </div>

@@ -4,6 +4,9 @@ import React from 'react';
 const DirectionBtns = props => {
     
     const { direction } = props.data;
+
+    // make a function to set the style based on previous direction
+    // - avoid it flipping around
     const way = `direction ${direction}`;
     
     return (
