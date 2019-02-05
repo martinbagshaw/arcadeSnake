@@ -18,6 +18,7 @@ export default class App extends React.Component {
         direction: 'right',
         boardWidth: 50,
         boardSquares: 20,
+        apple: [5, 4] // set initial apple
     };
 
 
@@ -27,9 +28,11 @@ export default class App extends React.Component {
         window.addEventListener('keydown', this.handleKeyPress);
         this.setState({running: true});
         this.startSnake();
+        this.addApple();
     }
 
     // unmount the component
+    // - do I need to reset the state here? possibly...
     componentWillUnmount() {
         // console.log('unmount');
         clearInterval(this.timer);
@@ -46,18 +49,82 @@ export default class App extends React.Component {
     }
 
 
+
     // add apple
+    // - may want to refactor this to not set the state itself
+
+
     // - add only if there isn't one on the board
-    // - add after a timeout
     // - put in a random location (that isn't on the snake)
     // - if the snake intersects with it, make it disappear, give it extra length, and display points
     addApple = () => {
-        // 🍎
+        // 🍎  will get output from a component
+
+
+        // apple needs to be preset
+        // if (this.state.apple.length===2) {
+            
+
+            // get board size
+            const boardSize = this.state.boardSquares;
+
+            // - - - - - - - - - 
+            // 1. get snake
+            const snake = this.state.snakeArr;
+
+            // 2. get grid
+            // - all coords for boardSize squared
+            // let grid = [];
+            // Array(boardSize).fill(0).map((row, rowInd) => {
+            //     Array(boardSize).fill(0).map((e, cellInd) => { grid.push([cellInd, rowInd]) })
+            // });
+
+            // 3. subtract snake coords from grid coords, but this just wasn't working ffs
+            
+
+            // ---
+            // alternatively
+            // pick random coords based on board size
+            // - check new array isn't in snake array
+
+            // random number based on boardSize
+            const random = () => {
+                let rand = Math.floor(Math.random()* boardSize - 1);
+                // if -ve, *-1
+                return rand < 0 ? rand*=-1 : rand;
+            }
+
+            // random apple coords
+            let apple = [random(), random()];
+
+
+            // recursion, yay!
+            // - this will break the call stack if it keeps running
+            // - ...but realistically, this will only run once before apple state gets set
+            const applePosition = (origPosition, snakeArray) => {
+                
+                const results = snakeArray.filter(array => array.every(item => origPosition.includes(item)));
+                if (results.length === 0) {
+                    return origPosition;
+                }
+                return applePosition(origPosition, snakeArray);
+
+            }
+            const a = applePosition(apple, snake);
+            this.setState({ apple: a })
+
+
+        // }
     }
 
 
     // update the snake
     updateSnake = () => {
+
+        // const startTime = performance.now();
+        // https://stackoverflow.com/questions/41218507/violation-long-running-javascript-task-took-xx-ms
+
+
         const cloneSnake = Array.from(this.state.snakeArr);
 
         // get the snake head (last item in the array)
@@ -100,8 +167,18 @@ export default class App extends React.Component {
         const newHead = [x, y];
         
         
-        // remove first item to keep snake the same length
-        const removeFirst = cloneSnake.shift();
+
+        // see if snake head has got the apple
+        // - if not, reduce length of array as above
+        if (JSON.stringify(this.state.apple) === JSON.stringify(newHead)) {
+            // console.log('got apple');
+            // this sets the state, probably not legit:
+            this.addApple();
+        } else {
+            // remove first item to keep snake the same length
+            // - avoid this, removeFirst is not used, makes overall function impure
+            const removeFirst = cloneSnake.shift();
+        }
 
         // compose the new snake
         const newSnake = [...cloneSnake, ...[newHead]];
@@ -110,6 +187,7 @@ export default class App extends React.Component {
         
         
         // game over check function
+        // - return true if there are duplicates in the array
         const removeDuplicates = arr => {
             let i, out = [], obj = {};
             arr.map((cell, ind) => obj[arr[ind]] = 0);
@@ -130,12 +208,16 @@ export default class App extends React.Component {
             this.setState({ 
                 running: false,
                 snakeArr: [],
-                direction: 'right'                         
+                direction: 'right',
+                apple: [5, 4]                       
             });
         }
         else {
             this.setState({ snakeArr: newSnake })
         }
+
+        // const duration = performance.now() - startTime;
+        // console.log(`someMethodIThinkMightBeSlow took ${duration}ms`);
     }
 
 

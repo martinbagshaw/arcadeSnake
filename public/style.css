@@ -134,6 +134,18 @@ width and height of elements are set with js
     border-radius: 0.5vw;
 }
 
+.apple-cell {
+    position: absolute;
+}
+
+/* score */
+.points-score {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    color: white;
+}
+
 
 /* - - - - - - - - - - - - - - - - - */
 
