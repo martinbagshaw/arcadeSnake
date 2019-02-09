@@ -74,44 +74,54 @@ export default class App extends React.Component {
 
             // 2. get grid
             // - all coords for boardSize squared
-            // let grid = [];
-            // Array(boardSize).fill(0).map((row, rowInd) => {
-            //     Array(boardSize).fill(0).map((e, cellInd) => { grid.push([cellInd, rowInd]) })
-            // });
+            let grid = [];
+            Array(boardSize).fill(0).map((row, rowInd) => {
+                Array(boardSize).fill(0).map((e, cellInd) => { grid.push([cellInd, rowInd]) })
+            });
 
-            // 3. subtract snake coords from grid coords, but this just wasn't working ffs
             
+            // 3. subtract snake coords from grid coords to get available squares for apple
+            const availableCells = (a1, a2) => {
 
-            // ---
-            // alternatively
-            // pick random coords based on board size
-            // - check new array isn't in snake array
+                // a is used as an object, diff = returned array
+                const a = [], diff = [];
 
-            // random number based on boardSize
-            const random = () => {
-                let rand = Math.floor(Math.random()* boardSize - 1);
+                // map through board:
+                // - assign each coordinate a value of true
+                // let c = [];
+                a2.map((arr, ind) => a[a1[ind]] = true);
+
+                // map through board AND 'a' object:
+                // - if item matches, delete it, otherwise it's value is still true
+                a2.map((arr, ind) => {
+                    a[a2[ind]] ? delete a[a2[ind]] : a[a2[ind]] = true;
+                })
+
+                // push to the new array (from 'a' object)
+                for (const k in a) {
+                    const x = parseInt(k.split(',')[0]);
+                    const y = parseInt(k.split(',')[1]);
+                    if (!isNaN(x && y)) diff.push([x, y]);
+                }
+            
+                return diff;
+            }
+            const available = availableCells(snake, grid)
+
+
+
+            
+            // 4. set the apple position using available squares
+            const randomInd = numberAvailable => {
+                let rand = Math.floor(Math.random()* numberAvailable - 1);
                 // if -ve, *-1
                 return rand < 0 ? rand*=-1 : rand;
             }
 
-            // random apple coords
-            let apple = [random(), random()];
+            const newAppleInd = randomInd(available.length);
+            const newApple = available[newAppleInd];
 
-
-            // recursion, yay!
-            // - this will break the call stack if it keeps running
-            // - ...but realistically, this will only run once before apple state gets set
-            const applePosition = (origPosition, snakeArray) => {
-                
-                const results = snakeArray.filter(array => array.every(item => origPosition.includes(item)));
-                if (results.length === 0) {
-                    return origPosition;
-                }
-                return applePosition(origPosition, snakeArray);
-
-            }
-            const a = applePosition(apple, snake);
-            this.setState({ apple: a })
+            this.setState({ apple: newApple })
 
 
         // }
