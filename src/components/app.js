@@ -16,6 +16,7 @@ export default class App extends React.Component {
         interval: 250,
         snakeArr: [[0,10],[1,10],[2,10],[3,10],[4,10],[5,10]],
         direction: 'right',
+        rotation: 90,
         boardWidth: 50,
         boardSquares: 20,
         apple: [5, 4] // set initial apple
@@ -88,7 +89,6 @@ export default class App extends React.Component {
 
                 // map through board:
                 // - assign each coordinate a value of true
-                // let c = [];
                 a2.map((arr, ind) => a[a1[ind]] = true);
 
                 // map through board AND 'a' object:
@@ -238,38 +238,79 @@ export default class App extends React.Component {
     
     
     // control movement
+    // - add in button presses here too
     handleKeyPress = e => {
 
-        let newDirection;
-        const oldDirection = this.state.direction;
+        let newDir;
+        const oldDir = this.state.direction;
         
         // set direction based on keyCode
         // prevent snake from going back on itself
-        if (e.keyCode === 38 && oldDirection !== 'down') {
-            newDirection = 'up';
+        if (e.keyCode === 38 && oldDir !== 'down') {
+            newDir = 'up';
         }
-        else if (e.keyCode === 40 && oldDirection !== 'up') {
-            newDirection = 'down';
+        else if (e.keyCode === 40 && oldDir !== 'up') {
+            newDir = 'down';
         }
-        else if (e.keyCode === 37 && oldDirection !== 'right') {
-            newDirection = 'left';
+        else if (e.keyCode === 37 && oldDir !== 'right') {
+            newDir = 'left';
         }
-        else if (e.keyCode === 39 && oldDirection !== 'left') {
-            newDirection = 'right';
+        else if (e.keyCode === 39 && oldDir !== 'left') {
+            newDir = 'right';
         }
         else {
             return false;
         }
 
+        
+
+        // get rotation - for css transformation of joystick
+
+        // down, left = c
+        // down, right = ac
+        // up, left = ac
+        // up, right = c
+        // right, up = ac
+        // right, down = c
+        // left, up = c
+        // left, down = ac
+        let newRotation = this.state.rotation;
+        if (
+            oldDir === 'down' && newDir === 'left' ||
+            oldDir === 'up' && newDir === 'right' ||
+            oldDir === 'right' && newDir === 'down' ||
+            oldDir === 'left' && newDir === 'up'
+        ) {
+            newRotation += 90;
+        }
+        else if (
+            oldDir === 'down' && newDir === 'right' ||
+            oldDir === 'up' && newDir === 'left' ||
+            oldDir === 'right' && newDir === 'up' ||
+            oldDir === 'left' && newDir === 'down'
+        ) {
+            newRotation -= 90;
+        }
+
+
+
+
+
         // occasional error message leads to here:
         // - usually happens after idle time on the page / tab
 
+        // - functions should not have to be bound to the component, as they are written as arrow functions
+        // - 
+        
         // Warning: Can't perform a React state update on an unmounted component.
         // This is a no-op, but it indicates a memory leak in your application.
         // To fix, cancel all subscriptions and asynchronous tasks in the componentWillUnmount method.
-    // in App
+        // in App
 
-        this.setState({ direction: newDirection });
+        this.setState({
+            direction: newDir,
+            rotation: newRotation
+        });
 
     }
 
