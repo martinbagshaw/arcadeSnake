@@ -3,15 +3,15 @@ import React from 'react';
 // get the props from the parent component's state
 const DirectionBtns = props => {
     
-    const { direction } = props.data;
+    const { rotation } = props.data;
 
-    // make a function to set the style based on previous direction
-    // - avoid it flipping around
-    const way = `direction ${direction}`;
-    
+    const style = {
+        transform: `rotate(${rotation}deg)`
+    }
+
     return (
         <div className="d-pad">
-            <div className={way}></div>
+            <div className="direction" style={style}></div>
         </div>
     )
 }
