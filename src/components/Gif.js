@@ -12,9 +12,9 @@ const Gif = props => {
 
     return (
         <div className="container gif">
-            <p>use the directional keys to play</p>
+            <p>use the directional keys or control pad to play</p>
             {/* <p>snakes on a plane gif to go here, obvs ✈️</p> */}
-            <DirectionBtns data={props.data}/>
+            <DirectionBtns data={props.data} dirBtns={props.dirBtns} />
         </div>
     )
 }

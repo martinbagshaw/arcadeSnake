@@ -224,6 +224,39 @@ width and height of elements are set with js
     background-color: black;
 }
 
+/* hidden buttons - for mobile - triangle shaped */
+.dir-btns {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    transform: rotate(45deg);
+}
+.dir-button {
+    /* visibility: hidden; */
+    color: transparent;
+    cursor: pointer;
+    position: absolute;
+    width: 3rem;
+    height: 3rem;
+}
+.dir-button.Up {
+    top: 0;
+}
+.dir-button.Down {
+    bottom: 0;
+    right: 0;
+}
+.dir-button.Left {
+    left: 0;
+    bottom: 0;
+}
+.dir-button.Right {
+    right: 0;
+    top: 0;
+}
+
 
 /* joystick */
 .direction {
@@ -252,19 +285,7 @@ width and height of elements are set with js
     background-color: red;
 }
 
-/* orientations */
-.direction.right {
-    transform: rotate(90deg);
-}
-.direction.left {
-    transform: rotate(-90deg);
-}
-.direction.up {
-    transform: none;
-}
-.direction.down {
-    transform: rotate(180deg);
-}
+
 
 
 
