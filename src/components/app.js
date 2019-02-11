@@ -134,7 +134,6 @@ export default class App extends React.Component {
         // const startTime = performance.now();
         // https://stackoverflow.com/questions/41218507/violation-long-running-javascript-task-took-xx-ms
 
-
         const cloneSnake = Array.from(this.state.snakeArr);
 
         // get the snake head (last item in the array)
@@ -241,21 +240,25 @@ export default class App extends React.Component {
     // - add in button presses here too
     handleKeyPress = e => {
 
+        
         let newDir;
         const oldDir = this.state.direction;
+
+        // button text
+        const btnTxt = e.target.textContent;
         
         // set direction based on keyCode
         // prevent snake from going back on itself
-        if (e.keyCode === 38 && oldDir !== 'down') {
+        if ((e.keyCode === 38 || btnTxt === 'Up') && oldDir !== 'down') {
             newDir = 'up';
         }
-        else if (e.keyCode === 40 && oldDir !== 'up') {
+        else if ((e.keyCode === 40 || btnTxt === 'Down') && oldDir !== 'up') {
             newDir = 'down';
         }
-        else if (e.keyCode === 37 && oldDir !== 'right') {
+        else if ((e.keyCode === 37 || btnTxt === 'Left') && oldDir !== 'right') {
             newDir = 'left';
         }
-        else if (e.keyCode === 39 && oldDir !== 'left') {
+        else if ((e.keyCode === 39 || btnTxt === 'Right') && oldDir !== 'left') {
             newDir = 'right';
         }
         else {
@@ -335,7 +338,7 @@ export default class App extends React.Component {
             <React.Fragment>
                 <Header data={this.state} />
                 <Board data={this.state} startover={this.startBtnClick} />
-                <Gif data={this.state} />
+                <Gif data={this.state} dirBtns={this.handleKeyPress} />
             </React.Fragment>
         )
     }
