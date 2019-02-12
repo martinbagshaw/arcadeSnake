@@ -17,7 +17,7 @@ export default class App extends React.Component {
         snakeArr: [[0,10],[1,10],[2,10],[3,10],[4,10],[5,10]],
         direction: 'right',
         rotation: 90,
-        boardWidth: 50,
+        // boardWidth: 50,
         boardSquares: 20,
         apple: [5, 4] // set initial apple
     };
@@ -27,9 +27,16 @@ export default class App extends React.Component {
     // - stuff here only happens once
     componentDidMount() {
         window.addEventListener('keydown', this.handleKeyPress);
+        window.addEventListener('load', this.handleBoardWidth);
+        window.addEventListener('resize', this.handleBoardWidth);
         this.setState({running: true});
         this.startSnake();
         this.addApple();
+    }
+
+    handleBoardWidth = e => {
+        const boardWidth = e.currentTarget.innerWidth > 600 ? 50 : 70;
+        this.setState({ boardWidth: boardWidth })
     }
 
     // unmount the component

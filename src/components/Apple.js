@@ -13,6 +13,7 @@ const Apple = props => {
             bottom: `${apple[1] * squareSize}vw`,
             width: `${squareSize}vw`,
             height: `${squareSize}vw`,
+            fontSize: `${squareSize}vw`,
         }
 
         return <div className='apple-cell' style={style}>🍎</div>

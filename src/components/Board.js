@@ -17,9 +17,10 @@ const Board = props => {
     return (
         <div className="container game">
             <div className="board" style={style}>
-            <Apple data={props.data}/>
-            <Snake data={props.data}/>
-            <StartBtn onClick={props.startover} data={props.data} />
+                <div className="board-border"></div>
+                <Apple data={props.data}/>
+                <Snake data={props.data}/>
+                <StartBtn onClick={props.startover} data={props.data} />
             </div>
         </div>
     )
