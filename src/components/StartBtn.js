@@ -12,7 +12,7 @@ const StartBtn = props => {
         return (
             <div className='start-over'>
             {!running ? overMessage : ''}
-                <button onClick={() => props.onClick(startover)} className='StartBtn'>Play Again ></button>
+                <button onClick={() => props.onClick(startover)} className='start-btn'>Play Again ></button>
             </div>
         )
     }

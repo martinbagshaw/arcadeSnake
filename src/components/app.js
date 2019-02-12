@@ -35,7 +35,7 @@ export default class App extends React.Component {
     }
 
     handleBoardWidth = e => {
-        const boardWidth = e.currentTarget.innerWidth > 600 ? 50 : 70;
+        const boardWidth = e.currentTarget.innerWidth > 600 ? 50 : 80;
         this.setState({ boardWidth: boardWidth })
     }
 
