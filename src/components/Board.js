@@ -1,9 +1,9 @@
 import React from "react";
 
 // Components
-import Apple from "./Apple";
-import Snake from "./Snake";
-import Score from "./Score";
+import Apple from "./Apple.js";
+import Snake from "./Snake.js";
+import Score from "./Score.js";
 import StartBtn from "./StartBtn.js";
 
 // get the props from the parent component's state
