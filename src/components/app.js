@@ -3,7 +3,7 @@ import React from "react";
 // components
 import Header from "./Header.js";
 import Board from "./Board.js";
-import Controls from "./Controls";
+import Controls from "./Controls.js";
 
 /*
 refactoring
