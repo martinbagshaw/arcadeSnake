@@ -215,10 +215,10 @@ width and height of elements are set with js
 /* game over message */
 .start-over {
   width: 20rem;
-  height: 10rem;
+  height: 20rem;
   position: absolute;
-  top: calc(50% - 5rem);
-  bottom: calc(50% - 5rem);
+  top: calc(50% - 10rem);
+  bottom: calc(50% - 10rem);
   left: calc(50% - 10rem);
   right: calc(50% - 10rem);
   display: flex;
@@ -226,9 +226,30 @@ width and height of elements are set with js
   align-items: center;
   justify-content: center;
   color: white;
-  font-size: 4rem;
 }
-
+.start-over h2 {
+  font-size: 2.5rem;
+  margin: 1rem 0;
+}
+.start-over p {
+  font-size: 2rem;
+}
+.start-over p span {
+  color: yellow;
+  text-shadow: 0.1rem 0.2rem 0.5rem yellow;
+  animation: flash linear 1s infinite;
+}
+@keyframes flash {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
 /* start button */
 .start-btn {
   z-index: 1;

@@ -1,9 +1,42 @@
 import React from "react";
 
+// components
 import Header from "./Header.js";
 import Board from "./Board.js";
 import Controls from "./Controls";
 
+/*
+refactoring
+- perhaps try a game component to hold the logic
+  - like tic tac toe
+- make a list of functions and actions, and when they happen
+- how can they be reduced / where are they repeated?
+- should parts of functions that don't directly change the state be refactored out?
+- can state be set in fewer places?
+
+functions
+  convert snake length to points
+  direction
+  potential apple space
+  apple randomiser
+
+app.js functions
+  handleBoardWidth
+  startSnake
+  highScore
+  scoreToState
+  addApple
+  updateSnake
+  handleKeyPress
+  startBtnClick
+
+
+extra functionality / improvements
+- hi score on game end
+- don't reset score on game end (try start instead)
+- make score flash once during game if hi is exceeded
+
+*/
 export default class App extends React.Component {
   state = {
     header: "🐍 Snake 🐍",
@@ -33,17 +66,17 @@ export default class App extends React.Component {
     this.addApple();
   }
 
-  handleBoardWidth = e => {
-    const boardWidth = e.currentTarget.innerWidth > 600 ? 47.5 : 80;
-    this.setState({ boardWidth: boardWidth });
-  };
-
   // unmount the component
   // - do I need to reset the state here? possibly...
   componentWillUnmount() {
     // console.log('unmount');
     clearInterval(this.timer);
   }
+
+  handleBoardWidth = e => {
+    const boardWidth = e.currentTarget.innerWidth > 600 ? 47.5 : 80;
+    this.setState({ boardWidth: boardWidth });
+  };
 
   // move snake on page load
   // - running state is not related to interval at present
@@ -163,6 +196,7 @@ export default class App extends React.Component {
   };
 
   // update the snake
+  // - pass state in as a prop?
   updateSnake = () => {
     // const startTime = performance.now();
     // https://stackoverflow.com/questions/41218507/violation-long-running-javascript-task-took-xx-ms
@@ -243,13 +277,12 @@ export default class App extends React.Component {
       clearInterval(this.timer);
 
       // high score function
-      // - check hiscore, and add high score to the state
-      //   console.log(this.state.snakeArr.length);
+      // - check hiScore, and add high score to the state
       this.highScore(this.state.snakeArr.length);
 
       this.setState({
         running: false,
-        snakeArr: [],
+        // snakeArr: [],
         direction: "right",
         apple: [5, 4]
       });
@@ -340,9 +373,10 @@ export default class App extends React.Component {
   };
 
   render() {
+    const { header } = this.state;
     return (
       <React.Fragment>
-        <Header data={this.state} />
+        <Header header={header} />
         <Board data={this.state} startover={this.startBtnClick} />
         <Controls data={this.state} dirBtns={this.handleKeyPress} />
       </React.Fragment>
