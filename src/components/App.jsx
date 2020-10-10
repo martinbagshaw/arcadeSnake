@@ -1,63 +1,99 @@
-import React from "react";
+import React, { Fragment } from "react";
+import styled from "styled-components";
 
-// components
-import Header from "./Header.js";
-import Board from "./Board.js";
-import Controls from "./Controls.js";
+import Header from "./Header";
+import Apple from "./Apple";
+import Snake from "./Snake";
+import Score from "./Score";
+import ResetButton from "./ResetButton";
+import Controls from "./Controls";
 
-/*
-refactoring
-- perhaps try a game component to hold the logic
-  - like tic tac toe
-- make a list of functions and actions, and when they happen
-- how can they be reduced / where are they repeated?
-- should parts of functions that don't directly change the state be refactored out?
-- can state be set in fewer places?
+const GameContainer = styled.div`
+  max-width: 100%;
+  margin: 0 1rem;
+  padding: 0.5rem 0 0;
+  text-align: center;
+  background-color: grey;
+  @media only screen and (min-width: 600px) {
+    max-width: 65vw;
+    margin: 0 auto;
+  }
+  @media only screen and (min-width: 1000px) {
+    padding-top: 0;
+    margin-top: 2.5rem;
+  }
+`;
 
-functions
-  convert snake length to points
-  direction
-  potential apple space
-  apple randomiser
+const Board = styled.div`
+  width: ${({ setSize }) => `${setSize}vw` || "auto"};
+  height: ${({ setSize }) => `${setSize}vw` || "auto"};
+  margin: 0 auto;
+  display: block;
+  position: relative;
+  background-color: black;
+  border: 0.5vw solid darkgray;
+  border-radius: 0.25vw;
+  box-sizing: content-box;
+  &:after {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    content: "";
+    display: block;
+    box-shadow: 0.125rem 0.6125rem 2.125rem inset, 0.125rem 0.325rem 1rem inset rgba(255, 255, 255, 0.5),
+      -0.125rem -0.25rem 1.5rem inset rgba(255, 255, 255, 0.5);
+  }
+  @media only screen and (min-width: 1000px) {
+    z-index: 1;
+  }
+`;
 
-app.js functions
-  handleBoardWidth
-  startSnake
-  highScore
-  scoreToState
-  addApple
-  updateSnake
-  handleKeyPress
-  startBtnClick
+const Border = styled.div`
+  position: absolute;
+  z-index: 1;
+  top: -0.5vw;
+  bottom: -0.5vw;
+  left: -0.5vw;
+  right: -0.5vw;
+  border: 0.25rem solid darkgray;
+  border-radius: 0.5vw;
+  @media only screen and (min-width: 600px) {
+    &:after {
+      box-shadow: 0.25rem -0.5rem 4.25rem inset, 0.25rem -0.75rem 1rem inset rgba(255, 255, 255, 0.25), -0.25rem 0.5rem 2rem inset rgba(255, 255, 255, 0.5),
+        -0.5rem 0.5rem 2rem inset rgba(255, 255, 255, 0.5);
+    }
+  }
+`;
 
+const settings = {
+  boardSquares: 20,
+  interval: 250,
+  snake: [
+    [0, 10],
+    [1, 10],
+    [2, 10],
+    [3, 10],
+    [4, 10],
+    [5, 10],
+  ],
+};
 
-extra functionality / improvements
-- hi score on game end
-- don't reset score on game end (try start instead)
-- make score flash once during game if hi is exceeded
-
-*/
 export default class App extends React.Component {
   state = {
-    header: "🐍 Snake 🐍",
-    tagline: "Play some snake FACers!!! 🐍 🐍 🐍 🐍 🐍",
-    overMessage: "Game Over!",
-    running: false,
-    interval: 250,
-    snakeArr: [[0, 10], [1, 10], [2, 10], [3, 10], [4, 10], [5, 10]],
+    apple: [5, 4],
     direction: "right",
+    hiScore: 0,
     rotation: 90,
-    // boardWidth: 50,
-    // try boardHeight. Large widths leave the page (on large screens)
-    boardSquares: 20,
-    apple: [5, 4], // set initial apple
-    hiScore: 0
+    running: false,
+    snakeArr: settings.snake
   };
 
   // mount the component, start the snake
   // - stuff here only happens once
   componentDidMount() {
-    window.addEventListener("keydown", this.handleKeyPress);
+    window.addEventListener("keydown", this.handleDirection);
     window.addEventListener("load", this.handleBoardWidth);
     window.addEventListener("resize", this.handleBoardWidth);
     this.scoreToState();
@@ -73,7 +109,7 @@ export default class App extends React.Component {
     clearInterval(this.timer);
   }
 
-  handleBoardWidth = e => {
+  handleBoardWidth = (e) => {
     const boardWidth = e.currentTarget.innerWidth > 600 ? 47.5 : 80;
     this.setState({ boardWidth: boardWidth });
   };
@@ -84,18 +120,16 @@ export default class App extends React.Component {
     clearInterval(this.timer);
     this.timer = setInterval(() => {
       this.updateSnake();
-    }, this.state.interval);
+    }, settings.interval);
   };
 
   // high score
   // - set highscore on game end
-  highScore = snakeLength => {
+  highScore = (snakeLength) => {
     // 60 = 6 snake squares
     const score = snakeLength * 10 - 60;
 
-    const tokenKey = Object.keys(localStorage).find(
-      item => item === "arcadeSnakeGameScore"
-    );
+    const tokenKey = Object.keys(localStorage).find((item) => item === "arcadeSnakeGameScore");
 
     // not in localStorage, add it
     if (!tokenKey) {
@@ -112,9 +146,7 @@ export default class App extends React.Component {
 
   // send score from localStorage to state
   scoreToState = () => {
-    const tokenKey = Object.keys(localStorage).find(
-      item => item === "arcadeSnakeGameScore"
-    );
+    const tokenKey = Object.keys(localStorage).find((item) => item === "arcadeSnakeGameScore");
     if (tokenKey) {
       const score = localStorage.getItem("arcadeSnakeGameScore", score);
       this.setState({ hiScore: score });
@@ -134,7 +166,7 @@ export default class App extends React.Component {
     // if (this.state.apple.length===2) {
 
     // get board size
-    const boardSize = this.state.boardSquares;
+    const boardSize = settings.boardSquares;
 
     // - - - - - - - - -
     // 1. get snake
@@ -181,7 +213,7 @@ export default class App extends React.Component {
     const available = availableCells(snake, grid);
 
     // 4. set the apple position using available squares
-    const randomInd = numberAvailable => {
+    const randomInd = (numberAvailable) => {
       let rand = Math.floor(Math.random() * numberAvailable - 1);
       // if -ve, *-1
       return rand < 0 ? (rand *= -1) : rand;
@@ -223,7 +255,7 @@ export default class App extends React.Component {
 
     // off board checks
     // - move snake to the other side of the board if it goes off the board
-    const size = this.state.boardSquares - 1;
+    const size = settings.boardSquares - 1;
     // - x
     if (x < 0) {
       x = size;
@@ -257,7 +289,7 @@ export default class App extends React.Component {
 
     // game over check function
     // - return true if there are duplicates in the array
-    const removeDuplicates = arr => {
+    const removeDuplicates = (arr) => {
       let i,
         out = [],
         obj = {};
@@ -284,7 +316,7 @@ export default class App extends React.Component {
         running: false,
         // snakeArr: [],
         direction: "right",
-        apple: [5, 4]
+        apple: [5, 4],
       });
     } else {
       this.setState({ snakeArr: newSnake });
@@ -295,39 +327,27 @@ export default class App extends React.Component {
   };
 
   // control movement
-  // - add in button presses here too
-  handleKeyPress = e => {
+  // - 'e' can be key or string passed in from button
+  handleDirection = (e, item) => {
     let newDir;
     const oldDir = this.state.direction;
 
-    // button text
-    const btnTxt = e.target.textContent;
-
     // set direction based on keyCode
     // prevent snake from going back on itself
-    if ((e.keyCode === 38 || btnTxt === "Up") && oldDir !== "down") {
+    if ((e.keyCode === 38 || item === "up") && oldDir !== "down") {
       newDir = "up";
-    } else if ((e.keyCode === 40 || btnTxt === "Down") && oldDir !== "up") {
+    } else if ((e.keyCode === 40 || item === "down") && oldDir !== "up") {
       newDir = "down";
-    } else if ((e.keyCode === 37 || btnTxt === "Left") && oldDir !== "right") {
+    } else if ((e.keyCode === 37 || item === "left") && oldDir !== "right") {
       newDir = "left";
-    } else if ((e.keyCode === 39 || btnTxt === "Right") && oldDir !== "left") {
+    } else if ((e.keyCode === 39 || item === "right") && oldDir !== "left") {
       newDir = "right";
     } else {
       return false;
     }
 
-    // get rotation - for css transformation of joystick
-
-    // down, left = c
-    // down, right = ac
-    // up, left = ac
-    // up, right = c
-    // right, up = ac
-    // right, down = c
-    // left, up = c
-    // left, down = ac
     let newRotation = this.state.rotation;
+    // clockwise
     if (
       (oldDir === "down" && newDir === "left") ||
       (oldDir === "up" && newDir === "right") ||
@@ -335,7 +355,9 @@ export default class App extends React.Component {
       (oldDir === "left" && newDir === "up")
     ) {
       newRotation += 90;
-    } else if (
+    }
+    // anticlockwise
+    else if (
       (oldDir === "down" && newDir === "right") ||
       (oldDir === "up" && newDir === "left") ||
       (oldDir === "right" && newDir === "up") ||
@@ -344,42 +366,41 @@ export default class App extends React.Component {
       newRotation -= 90;
     }
 
-    // occasional error message leads to here:
-    // - usually happens after idle time on the page / tab
-
-    // - functions should not have to be bound to the component, as they are written as arrow functions
-    // -
-
-    // Warning: Can't perform a React state update on an unmounted component.
-    // This is a no-op, but it indicates a memory leak in your application.
-    // To fix, cancel all subscriptions and asynchronous tasks in the componentWillUnmount method.
-    // in App
-
     this.setState({
       direction: newDir,
-      rotation: newRotation
+      rotation: newRotation,
     });
   };
 
   // start snake on game over
-  startBtnClick = () => {
+  resetClick = () => {
     clearInterval(this.timer);
     this.setState({
       running: true,
-      snakeArr: [[0, 10], [1, 10], [2, 10], [3, 10], [4, 10], [5, 10]]
+      snakeArr: settings.snake,
     });
     this.scoreToState(); // update hiScore
     this.startSnake();
   };
 
   render() {
-    const { header } = this.state;
+    const { apple, boardWidth, hiScore, rotation, running, snakeArr } = this.state;
+    const squareSize = boardWidth / settings.boardSquares || 2;
+
     return (
-      <React.Fragment>
-        <Header header={header} />
-        <Board data={this.state} startover={this.startBtnClick} />
-        <Controls data={this.state} dirBtns={this.handleKeyPress} />
-      </React.Fragment>
+      <Fragment>
+        <Header />
+        <GameContainer>
+          <Board setSize={boardWidth}>
+            <Border />
+            {apple.length === 2 && <Apple apple={apple} squareSize={squareSize} />}
+            <Snake snakeArr={snakeArr} squareSize={squareSize} />
+            <Score hiScore={hiScore} running={running} snakeArr={snakeArr} />
+            {!running && <ResetButton hiScore={hiScore} resetGame={this.resetClick} snakeArr={snakeArr} />}
+          </Board>
+        </GameContainer>
+        <Controls rotation={rotation} setDirection={this.handleDirection} />
+      </Fragment>
     );
   }
 }
