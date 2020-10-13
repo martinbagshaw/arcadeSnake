@@ -43,7 +43,7 @@ const flash = keyframes`
   }
 `;
 
-const HiScore = styled.span`
+const HighScore = styled.span`
   color: yellow;
   text-shadow: 0.1rem 0.2rem 0.5rem yellow;
   animation: linear 1s infinite;
@@ -68,13 +68,13 @@ const Button = styled.button`
   }
 `;
 
-const StartBtn = ({ hiScore, resetGame, snakeArr }) => {
+const ResetButton = ({ highScore, resetGame, snakeArr }) => {
   const yourScore = snakeArr.length * 10 - 60;
   return (
     <StartContainer>
       <H2>Game Over!</H2>
-      <P>{yourScore > hiScore ?
-        <HiScore>New High Score! {yourScore}</HiScore> :
+      <P>{yourScore > highScore ?
+        <HighScore>New High Score! {yourScore}</HighScore> :
         <Fragment>Your Score: {yourScore}</Fragment>}
       </P>
       <Button onClick={() => resetGame()}>Play Again &gt;</Button>
@@ -82,4 +82,4 @@ const StartBtn = ({ hiScore, resetGame, snakeArr }) => {
   );
 };
 
-export default StartBtn;
+export default ResetButton;

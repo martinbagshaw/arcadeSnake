@@ -14,13 +14,13 @@ const Cell = styled.div`
 
 const Snake = ({ snakeArr, squareSize }) => (
   <Fragment>
-    {snakeArr.map(([left, right], index) => (
+    {snakeArr ? snakeArr.map(([left, right], index) => (
       <Cell
         key={index}
         bottom={right * squareSize}
         left={left * squareSize}
         size={squareSize} />
-    ))}
+    )) : null}
   </Fragment>
 );
 

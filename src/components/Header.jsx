@@ -14,7 +14,7 @@ const HeaderContainer = styled.header`
   box-shadow: -0.125rem 0.25rem 1.5rem inset greenyellow, -0.375rem -2.25rem 3rem inset greenyellow;
   @media only screen and (min-width: 600px) {
     max-width: 65vw;
-    margin: 0 auto;
+    margin: 1rem auto 0;
     box-shadow: -0.25rem 0.5rem 3rem inset greenyellow, -0.75rem -4.5rem 6rem inset greenyellow;
   }
   @media only screen and (min-width: 1000px) {
@@ -35,24 +35,28 @@ const HeaderContainer = styled.header`
 
 const H1 = styled.h1`
   font-family: "Eater", cursive;
-  font-size: 2.3rem;
+  font-size: 2.5rem;
   line-height: 1.8;
+  margin: -0.5rem 0 0;
   color: darkolivegreen;
   text-shadow: -0.1rem -0.1rem 0 greenyellow, 0.1rem 0.1rem 0 greenyellow, -0.1rem 0.1rem 0 green, 0.1rem 0.1rem 0 green, 0.25rem 0.125rem 0.5rem white,
     -0.25rem 0.125rem 0.5rem white;
-  max-width: 4vw;
-  word-wrap: break-word;
-  line-height: 1.2;
-  margin: 1rem auto;
   @media only screen and (min-width: 600px) {
+    font-size: 3.25rem;
+    line-height: 1.5;
+  }
+  @media only screen and (min-width: 768px) {
     font-size: 4rem;
-    line-height: 1.55;
   }
   @media only screen and (min-width: 1000px) {
+    font-size: 3.5rem;
     max-width: 4vw;
     word-wrap: break-word;
     line-height: 1.2;
     margin: 1rem auto;
+  }
+  @media only screen and (min-width: 1280px) {
+    font-size: 4rem;
   }
 `;
 

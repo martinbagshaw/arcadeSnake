@@ -13,14 +13,11 @@ const Hi = styled.div`
   color: yellow;
 `;
 
-const Score = ({ hiScore, running, snakeArr }) => {
-  console.log('snakeArr', snakeArr);
-  // reset score to 0 if the game is over
+const Score = ({ highScore, running, snakeArr }) => {
   const currentScore = running ? snakeArr.length * 10 - 60 : 0;
-  console.log('currentScore', currentScore);
   return (
     <Container>
-      <Hi>hi: {hiScore}</Hi>
+      <Hi>hi: {highScore}</Hi>
       <div>score: {currentScore}</div>
     </Container>
   );

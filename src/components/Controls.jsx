@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 
 const ControlsContainer = styled.section`
@@ -134,20 +134,48 @@ const Button = styled.button`
   }
 `;
 
-const Controls = ({ rotation, setDirection }) => (
-  <ControlsContainer>
-    <p>use the directional keys or control pad to play</p>
-    <Pad>
-      <ButtonContainer>
-        {["up", "down", "left", "right"].map((item) => (
-          <Button aria-label={item} direction={item} key={item} onClick={(e) => setDirection(e, item)}>
-            {item}
-          </Button>
-        ))}
-      </ButtonContainer>
-      <JoyStick rotation={rotation} />
-    </Pad>
-  </ControlsContainer>
-);
+const rotate = {
+  "down-left": "clock",
+  "up-right": "clock",
+  "right-down": "clock",
+  "left-up": "clock",
+  "down-right": "anti",
+  "up-left": "anti",
+  "right-up": "anti",
+  "left-down": "anti",
+};
+
+const Controls = ({ direction, setDirection }) => {
+  const [oldDirection, setOldDirection] = useState();
+  const [rotation, setRotation] = useState(90);
+
+  useEffect(() => {
+    setOldDirection(direction);
+  }, [direction]);
+
+  useEffect(() => {
+    if (oldDirection && (direction !== oldDirection)) {
+      let newRotation = rotation;
+      newRotation = rotate[`${oldDirection}-${direction}`] === "clock" ? (newRotation += 90) : (newRotation -= 90);
+      setRotation(newRotation)
+    }
+  }, [direction, oldDirection]);
+
+  return (
+    <ControlsContainer>
+      <p>use the directional keys or control pad to play</p>
+      <Pad>
+        <ButtonContainer>
+          {["up", "down", "left", "right"].map((item) => (
+            <Button aria-label={item} direction={item} key={item} onClick={(e) => setDirection(e, item)}>
+              {item}
+            </Button>
+          ))}
+        </ButtonContainer>
+        <JoyStick rotation={rotation} />
+      </Pad>
+    </ControlsContainer>
+  );
+};
 
 export default Controls;

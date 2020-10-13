@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { useEffect, useRef, useState, Fragment } from "react";
 import styled from "styled-components";
 
 import Header from "./Header";
@@ -80,97 +80,158 @@ const settings = {
   ],
 };
 
-export default class App extends React.Component {
-  state = {
-    apple: [5, 4],
-    direction: "right",
-    hiScore: 0,
-    rotation: 90,
-    running: false,
-    snakeArr: settings.snake
-  };
-
-  // mount the component, start the snake
-  // - stuff here only happens once
-  componentDidMount() {
-    window.addEventListener("keydown", this.handleDirection);
-    window.addEventListener("load", this.handleBoardWidth);
-    window.addEventListener("resize", this.handleBoardWidth);
-    this.scoreToState();
-    this.setState({ running: true });
-    this.startSnake();
-    this.addApple();
+// save and get high score from storage
+const storageKey = Object.keys(localStorage).find((item) => item === "arcadeSnakeGameScore");
+const setScoreToStorage = (snakeLength) => {
+  const score = snakeLength * 10 - 60;
+  if (score > localStorage[storageKey] || !storageKey) {
+    localStorage.setItem("arcadeSnakeGameScore", score);
   }
-
-  // unmount the component
-  // - do I need to reset the state here? possibly...
-  componentWillUnmount() {
-    // console.log('unmount');
-    clearInterval(this.timer);
+};
+const getScoreFromStorage = () => {
+  if (storageKey) {
+    return localStorage.getItem(storageKey);
   }
+};
 
-  handleBoardWidth = (e) => {
-    const boardWidth = e.currentTarget.innerWidth > 600 ? 47.5 : 80;
-    this.setState({ boardWidth: boardWidth });
-  };
+const App = () => {
+  const [apple, setApple] = useState([5, 4]);
+  const [boardWidth, setBoardWidth] = useState(47.5);
+  const [direction, setDirection] = useState("right");
+  const [gameOver, setGameOver] = useState(false);
+  const [highScore, setHighScore] = useState(0);
+  const [running, setRunning] = useState(false);
+  const [snake, setSnake] = useState(settings.snake);
 
-  // move snake on page load
-  // - running state is not related to interval at present
-  startSnake = () => {
-    clearInterval(this.timer);
-    this.timer = setInterval(() => {
-      this.updateSnake();
-    }, settings.interval);
-  };
+  const handleDirection = (e, item) => {
+    const codes = {
+      38: "up",
+      39: "right",
+      40: "down",
+      37: "left",
+    };
+    const opposites = {
+      up: "down",
+      down: "up",
+      right: "left",
+      left: "right",
+    };
 
-  // high score
-  // - set highscore on game end
-  highScore = (snakeLength) => {
-    // 60 = 6 snake squares
-    const score = snakeLength * 10 - 60;
-
-    const tokenKey = Object.keys(localStorage).find((item) => item === "arcadeSnakeGameScore");
-
-    // not in localStorage, add it
-    if (!tokenKey) {
-      localStorage.setItem("arcadeSnakeGameScore", score);
+    let newDir = direction;
+    const input = codes[e.keyCode] || item;
+    if (input) {
+      newDir = direction !== opposites[input] ? input : direction;
     }
-    // in localStorage
-    else {
-      const storedScore = localStorage["arcadeSnakeGameScore"];
-      if (score > storedScore) {
-        localStorage.setItem("arcadeSnakeGameScore", score);
+    setDirection(newDir);
+  };
+
+  const handleBoardWidth = (e) => {
+    const width = e.currentTarget.innerWidth > 600 ? 47.5 : 80;
+    setBoardWidth(width);
+  };
+
+  const updateSnake = () => {
+    const getNewHead = (snake, direction) => {
+      const newSnake = [...snake];
+      const snakeHead = newSnake[snake.length - 1];
+      let [x, y] = snakeHead;
+      if (direction === "up") {
+        y++;
       }
+      if (direction === "down") {
+        y--;
+      }
+      if (direction === "left") {
+        x--;
+      }
+      if (direction === "right") {
+        x++;
+      }
+      // off board checks - move to other side of board
+      const size = settings.boardSquares - 1;
+      if (x < 0) {
+        x = size;
+      }
+      if (x > size) {
+        x = 0;
+      }
+      if (y < 0) {
+        y = size;
+      }
+      if (y > size) {
+        y = 0;
+      }
+      return [x, y];
+    };
+    const didEatApple = (apple, newHead) => {
+      const [a1, a2] = apple;
+      const [h1, h2] = newHead;
+      if (a1 === h1 && a2 === h2) {
+        return true;
+      }
+      return false;
+    };
+    const getNewSnake = (snake, snakeHead, ateApple) => {
+      const newSnake = [...snake];
+      const snakeBody = ateApple ? newSnake : [...newSnake.slice(0, 0), ...newSnake.slice(0 + 1)];
+      return [...snakeBody, snakeHead];
+    };
+    const checkGameOver = (newSnake) => {
+      const removeDuplicates = (arr) => {
+        let i,
+          out = [],
+          obj = {};
+        arr.map((cell, ind) => (obj[arr[ind]] = 0));
+        for (i in obj) {
+          out.push(i);
+        }
+        return out;
+      };
+      return newSnake.length !== removeDuplicates(newSnake).length;
+    };
+
+    const newHead = getNewHead(snake, direction);
+    const ateApple = didEatApple(apple, newHead);
+    const newSnake = getNewSnake(snake, newHead, ateApple);
+    const gameOverTrue = checkGameOver(newSnake);
+
+    if (gameOverTrue) {
+      setApple([5, 4]);
+      setDirection("right");
+      setRunning(false);
+      setGameOver(true);
+      setScoreToStorage(snake.length);
+    } else {
+      if (ateApple) {
+        addApple();
+      }
+      setSnake(newSnake);
     }
   };
 
-  // send score from localStorage to state
-  scoreToState = () => {
-    const tokenKey = Object.keys(localStorage).find((item) => item === "arcadeSnakeGameScore");
-    if (tokenKey) {
-      const score = localStorage.getItem("arcadeSnakeGameScore", score);
-      this.setState({ hiScore: score });
-    }
-  };
+  useEffect(() => {
+    const interval = setInterval(() => {
+      updateSnake(() => setSnake(snake));
+    }, settings.interval);
+    return () => clearInterval(interval);
+  }, [snake]);
 
-  // add apple
-  // - may want to refactor this to not set the state itself
+  useEffect(() => {
+    window.addEventListener("load", handleBoardWidth);
+    window.addEventListener("resize", handleBoardWidth);
+    setHighScore(getScoreFromStorage());
+    setRunning(true);
+  }, []);
 
-  // - add only if there isn't one on the board
-  // - put in a random location (that isn't on the snake)
-  // - if the snake intersects with it, make it disappear, give it extra length, and display points
-  addApple = () => {
-    // 🍎  will get output from a component
+  useEffect(() => {
+    document.addEventListener("keydown", handleDirection);
+    return () => {
+      document.removeEventListener("keydown", handleDirection);
+    };
+  }, [direction]);
 
-    // apple needs to be preset
-    // if (this.state.apple.length===2) {
-
-    // get board size
+  const addApple = () => {
     const boardSize = settings.boardSquares;
-
-    // - - - - - - - - -
-    // 1. get snake
-    const snake = this.state.snakeArr;
 
     // 2. get grid
     // - all coords for boardSize squared
@@ -221,186 +282,32 @@ export default class App extends React.Component {
 
     const newAppleInd = randomInd(available.length);
     const newApple = available[newAppleInd];
-
-    this.setState({ apple: newApple });
-
-    // }
+    setApple(newApple);
   };
 
-  // update the snake
-  // - pass state in as a prop?
-  updateSnake = () => {
-    // const startTime = performance.now();
-    // https://stackoverflow.com/questions/41218507/violation-long-running-javascript-task-took-xx-ms
-
-    const cloneSnake = Array.from(this.state.snakeArr);
-
-    // get the snake head (last item in the array)
-    const snakeHead = cloneSnake[cloneSnake.length - 1];
-    let [x, y] = snakeHead;
-
-    // update the direction
-    if (this.state.direction === "up") {
-      y++;
-    }
-    if (this.state.direction === "down") {
-      y--;
-    }
-    if (this.state.direction === "left") {
-      x--;
-    }
-    if (this.state.direction === "right") {
-      x++;
-    }
-
-    // off board checks
-    // - move snake to the other side of the board if it goes off the board
-    const size = settings.boardSquares - 1;
-    // - x
-    if (x < 0) {
-      x = size;
-    }
-    if (x > size) {
-      x = 0;
-    }
-    // - y
-    if (y < 0) {
-      y = size;
-    }
-    if (y > size) {
-      y = 0;
-    }
-    const newHead = [x, y];
-
-    // see if snake head has got the apple
-    // - if not, reduce length of array as above
-    if (JSON.stringify(this.state.apple) === JSON.stringify(newHead)) {
-      // console.log('got apple');
-      // this sets the state, probably not legit:
-      this.addApple();
-    } else {
-      // remove first item to keep snake the same length
-      // - avoid this, removeFirst is not used, makes overall function impure
-      const removeFirst = cloneSnake.shift();
-    }
-
-    // compose the new snake
-    const newSnake = [...cloneSnake, ...[newHead]];
-
-    // game over check function
-    // - return true if there are duplicates in the array
-    const removeDuplicates = (arr) => {
-      let i,
-        out = [],
-        obj = {};
-      arr.map((cell, ind) => (obj[arr[ind]] = 0));
-      for (i in obj) {
-        out.push(i);
-      }
-      return out;
-    };
-    const noDupes = removeDuplicates(newSnake);
-    // console.log(newSnake, noDupes)
-
-    // game over check
-    const gameOver = newSnake.length === noDupes.length ? false : true;
-
-    if (gameOver) {
-      clearInterval(this.timer);
-
-      // high score function
-      // - check hiScore, and add high score to the state
-      this.highScore(this.state.snakeArr.length);
-
-      this.setState({
-        running: false,
-        // snakeArr: [],
-        direction: "right",
-        apple: [5, 4],
-      });
-    } else {
-      this.setState({ snakeArr: newSnake });
-    }
-
-    // const duration = performance.now() - startTime;
-    // console.log(`someMethodIThinkMightBeSlow took ${duration}ms`);
+  const resetClick = () => {
+    setHighScore(getScoreFromStorage());
+    setRunning(true);
+    setSnake(settings.snake);
   };
 
-  // control movement
-  // - 'e' can be key or string passed in from button
-  handleDirection = (e, item) => {
-    let newDir;
-    const oldDir = this.state.direction;
+  const squareSize = boardWidth / settings.boardSquares || 2;
 
-    // set direction based on keyCode
-    // prevent snake from going back on itself
-    if ((e.keyCode === 38 || item === "up") && oldDir !== "down") {
-      newDir = "up";
-    } else if ((e.keyCode === 40 || item === "down") && oldDir !== "up") {
-      newDir = "down";
-    } else if ((e.keyCode === 37 || item === "left") && oldDir !== "right") {
-      newDir = "left";
-    } else if ((e.keyCode === 39 || item === "right") && oldDir !== "left") {
-      newDir = "right";
-    } else {
-      return false;
-    }
+  return (
+    <Fragment>
+      <Header />
+      <GameContainer>
+        <Board setSize={boardWidth}>
+          <Border />
+          {apple.length === 2 && <Apple apple={apple} squareSize={squareSize} />}
+          <Snake snakeArr={snake} squareSize={squareSize} />
+          <Score highScore={highScore} running={running} snakeArr={snake} />
+          {gameOver && <ResetButton highScore={highScore} resetGame={resetClick} snakeArr={snake} />}
+        </Board>
+      </GameContainer>
+      <Controls direction={direction} setDirection={handleDirection} />
+    </Fragment>
+  );
+};
 
-    let newRotation = this.state.rotation;
-    // clockwise
-    if (
-      (oldDir === "down" && newDir === "left") ||
-      (oldDir === "up" && newDir === "right") ||
-      (oldDir === "right" && newDir === "down") ||
-      (oldDir === "left" && newDir === "up")
-    ) {
-      newRotation += 90;
-    }
-    // anticlockwise
-    else if (
-      (oldDir === "down" && newDir === "right") ||
-      (oldDir === "up" && newDir === "left") ||
-      (oldDir === "right" && newDir === "up") ||
-      (oldDir === "left" && newDir === "down")
-    ) {
-      newRotation -= 90;
-    }
-
-    this.setState({
-      direction: newDir,
-      rotation: newRotation,
-    });
-  };
-
-  // start snake on game over
-  resetClick = () => {
-    clearInterval(this.timer);
-    this.setState({
-      running: true,
-      snakeArr: settings.snake,
-    });
-    this.scoreToState(); // update hiScore
-    this.startSnake();
-  };
-
-  render() {
-    const { apple, boardWidth, hiScore, rotation, running, snakeArr } = this.state;
-    const squareSize = boardWidth / settings.boardSquares || 2;
-
-    return (
-      <Fragment>
-        <Header />
-        <GameContainer>
-          <Board setSize={boardWidth}>
-            <Border />
-            {apple.length === 2 && <Apple apple={apple} squareSize={squareSize} />}
-            <Snake snakeArr={snakeArr} squareSize={squareSize} />
-            <Score hiScore={hiScore} running={running} snakeArr={snakeArr} />
-            {!running && <ResetButton hiScore={hiScore} resetGame={this.resetClick} snakeArr={snakeArr} />}
-          </Board>
-        </GameContainer>
-        <Controls rotation={rotation} setDirection={this.handleDirection} />
-      </Fragment>
-    );
-  }
-}
+export default App;
