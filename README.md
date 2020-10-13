@@ -7,6 +7,10 @@
 
 > [View on Netlify >](https://arcade-snake.netlify.com/)
 
+```diff
++ Updated to use styled-components and hooks (13th October 2020)
+```
+
 ![infinity snake](https://media3.giphy.com/media/3oFzmdjqH15YebLQ52/giphy.gif?cid=3640f6095c564ae56b626a34416c111f)
 
 ### What more do you need to know?
