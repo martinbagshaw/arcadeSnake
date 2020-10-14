@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, Fragment } from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import styled from "styled-components";
 
 import Header from "./Header";
@@ -102,7 +102,9 @@ const App = () => {
   const [highScore, setHighScore] = useState(0);
   const [running, setRunning] = useState(false);
   const [snake, setSnake] = useState(settings.snake);
+  const [flag, setFlag] = useState(false);
 
+  // https://github.com/martinbagshaw/arcadeSnake/issues/20
   const handleDirection = (e, item) => {
     const codes = {
       38: "up",
@@ -210,11 +212,17 @@ const App = () => {
   };
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      updateSnake(() => setSnake(snake));
-    }, settings.interval);
-    return () => clearInterval(interval);
-  }, [snake]);
+    if (!gameOver) {
+      const interval = setInterval(() => {
+        setFlag((flag) => !flag);
+      }, settings.interval);
+      return () => clearInterval(interval);
+    }
+  }, [gameOver]);
+
+  useEffect(() => {
+    updateSnake();
+  }, [flag]);
 
   useEffect(() => {
     window.addEventListener("load", handleBoardWidth);
@@ -233,8 +241,7 @@ const App = () => {
   const addApple = () => {
     const boardSize = settings.boardSquares;
 
-    // 2. get grid
-    // - all coords for boardSize squared
+    // get grid
     let grid = [];
     Array(boardSize)
       .fill(0)
@@ -246,7 +253,7 @@ const App = () => {
           });
       });
 
-    // 3. subtract snake coords from grid coords to get available squares for apple
+    // subtract snake coords from grid coords to get available squares for apple
     const availableCells = (a1, a2) => {
       // a is used as an object, diff = returned array
       const a = [],
@@ -273,10 +280,9 @@ const App = () => {
     };
     const available = availableCells(snake, grid);
 
-    // 4. set the apple position using available squares
+    // set the apple position using available squares
     const randomInd = (numberAvailable) => {
       let rand = Math.floor(Math.random() * numberAvailable - 1);
-      // if -ve, *-1
       return rand < 0 ? (rand *= -1) : rand;
     };
 
@@ -288,6 +294,8 @@ const App = () => {
   const resetClick = () => {
     setHighScore(getScoreFromStorage());
     setRunning(true);
+    setGameOver(false);
+    setDirection("right");
     setSnake(settings.snake);
   };
 
